@@ -1,13 +1,25 @@
-"""SQLAlchemy deklarativ Base va umumiy mixinlar."""
-from sqlalchemy.orm import declarative_base
-from sqlalchemy import Column, DateTime, func
+from __future__ import annotations
+
 from datetime import datetime
 
+from sqlalchemy import DateTime
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.sql import func
 
-Base = declarative_base()
+
+class Base(DeclarativeBase):
+    pass
 
 
 class TimestampMixin:
-    """Vaqt cho'plari uchun mixin."""
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        nullable=False,
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now(),
+        nullable=False,
+    )

@@ -1,34 +1,19 @@
-"""Pydantic Settings: Muhit o'zgaruvchilari va konfiguratsiya."""
-from pydantic_settings import BaseSettings
-from typing import Optional
+# backend/core/config.py
+from __future__ import annotations
+
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    """Loyihaning asosiy sozlamalari."""
-    
-    # Asosiy parametrlar
-    PROJECT_NAME: str = "Logist System"
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+
     DEBUG: bool = False
-    VERSION: str = "1.0.0"
-    
-    # Database
-    DATABASE_URL: str = "postgresql+asyncpg://user:password@localhost/logist_db"
-    
-    # JWT
-    SECRET_KEY: str = "your-secret-key-change-in-production"
-    ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
-    REFRESH_TOKEN_EXPIRE_DAYS: int = 7
-    
-    # CORS
-    ALLOWED_ORIGINS: list = [
-        "http://localhost:3000",
-        "http://localhost:5173",
-    ]
-    
-    class Config:
-        env_file = ".env"
-        case_sensitive = True
+
+    DATABASE_URL: str
+
+    JWT_SECRET_KEY: str
+    JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
+    JWT_REFRESH_TOKEN_EXPIRE_DAYS: int = 30
 
 
 settings = Settings()
