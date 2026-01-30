@@ -1,0 +1,1 @@
+"""Repositories moduli - CRUD operatsiyalari."""
